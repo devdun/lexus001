@@ -1,9 +1,7 @@
 package lexus_page_factory;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -29,6 +27,9 @@ public class FormPage {
     @FindBy(id = FormXpathContent.EMAIL_ADDRESS_INPUT)
     private WebElement emailAddressInput;
 
+    @FindBy(xpath = FormXpathContent.COUNTRY_CODE_SECTION)
+    private WebElement phoneNoCountry;
+
     @FindBy(id = FormXpathContent.PHONE_NO_INPUT)
     private WebElement phoneNoInput;
 
@@ -42,7 +43,7 @@ public class FormPage {
     private WebElement preferredSales;
 
     @FindBy(xpath = FormXpathContent.NUMBER_OF_PAX_DROPDOWN)
-    private WebElement numberOfPaxDropdown;
+    public WebElement numberOfPaxDropdown;
 
     @FindBy(xpath = FormXpathContent.PREFERRED_MODEL)
     private WebElement preferredModel;
@@ -59,7 +60,27 @@ public class FormPage {
     @FindBy(xpath = FormXpathContent.SUBMIT)
     private WebElement submitButton;
 
-    public void fillForm(String firstName, String lastName, String email, String countryCode, String phoneNo,
+    public void fillFormPersonalDetails(String firstName, String lastName, String email, String countryCode, String phoneNo) {
+        fillFirstName(firstName);
+        fillLastName(lastName);
+        fillEmailAddress(email);
+        fillPhoneNumber(countryCode, phoneNo);
+    }
+
+    public void fillFormDriveDetails(String preferredTime, String consultant, String pax, String models, String testDrive){
+        selectPreferredTime(preferredTime);
+        selectPreferredSalesConsultant(consultant);
+        selectNumberOfPax(pax);
+        setPreferredModel(models);
+        selectTestDriveOption(testDrive);
+    }
+
+    public void fillAcceptConditions(){
+//        clickPrivacyPolicyCheckbox();
+//        clickMarketingCheckbox();
+    }
+
+    public void fillFormDriveDetails(String firstName, String lastName, String email, String countryCode, String phoneNo,
                          String preferredTimeValue, String consultant, String pax, String models, String testDrive) {
         fillFirstName(firstName);
         fillLastName(lastName);
@@ -70,8 +91,6 @@ public class FormPage {
         selectNumberOfPax(pax);
         setPreferredModel(models);
         selectTestDriveOption(testDrive);
-        clickPrivacyPolicyCheckbox();
-        clickMarketingCheckbox();
     }
 
     public void fillFirstName(String firstName) {
@@ -90,8 +109,12 @@ public class FormPage {
     }
 
     public void fillPhoneNumber(String countryCode, String phoneNo) {
+        phoneNoCountry.click();
+        WebElement setCountryCode = driver.findElement(By.xpath("//span[@class='iti__dial-code'][contains(text(),'"+countryCode+"')]"));
+        setCountryCode.click();
+
         phoneNoInput.clear();
-        phoneNoInput.sendKeys(countryCode + phoneNo);
+        phoneNoInput.sendKeys(phoneNo);
     }
 
     public void selectPreferredDate(String date) {
@@ -111,8 +134,10 @@ public class FormPage {
     }
 
     public void selectPreferredSalesConsultant(String consultant) {
-        preferredSales.click();
-        selectValueFromDropdown(consultant);
+        if (consultant != null) {
+            preferredSales.click();
+            selectValueFromDropdown(consultant);
+        }
     }
 
     public void setPreferredModel(String model) {
@@ -121,8 +146,20 @@ public class FormPage {
     }
 
     public void selectTestDriveOption(String testDrive) {
+        scrollDown(driver);
         testDriveOption.click();
         selectValueFromDropdown(testDrive);
+    }
+
+    public static void scrollDown(WebDriver driver) {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            // Scroll down to the bottom of the page
+            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+            System.out.println("Scrolled down successfully.");
+        } catch (Exception e) {
+            System.out.println("Error occurred while scrolling: " + e.getMessage());
+        }
     }
 
     public void selectNumberOfPax(String paxCount) {
@@ -143,7 +180,7 @@ public class FormPage {
     }
 
     private void selectValueFromDropdown(String value) {
-        driver.findElement(By.xpath("//span[text()='" + value + "']")).click();
+        driver.findElement(By.xpath("//div[@class='choices__item choices__item--choice choices__item--selectable'][@data-value='"+value+"']")).click();
     }
 
     public boolean isEmailErrorDisplayed() {
@@ -155,3 +192,4 @@ public class FormPage {
         }
     }
 }
+
