@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="AutomationFrameworkSuite">
+    <!--Values Chrome Firefox HLChrome HLFirefox HTMLUnit phantomJS-->
+    <parameter name="browser" value="chrome"/>
+
+    <!--Values AdminURL StatementURL PatientURL-->
+    <parameter name="URL" value="QA"/>
+
+    <test name="TestDriveFormTest">
+        <classes>
+            <class name="tests.forms.VerifyFormFunctionality"/>
+        </classes>
+    </test>
+</suite>
