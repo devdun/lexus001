@@ -14,12 +14,16 @@ public class FormXpathContent {
     public static final String PREFERRED_SALES_DROPDOWN_A = "select_preferred_sales_consultant";
     public static final String NUMBER_OF_PAX_DROPDOWN = "//select[@id='select_pax']//following-sibling::div";
     public static final String PREFERRED_MODEL = "//select[@id='select_preferred_models']//following-sibling::input";
+    public static final String PREFERRED_MODEL_ClEAR = "//div[@data-id= 'select_preferred_models']//button[contains(text(), 'Remove item')]";
     public static final String TEST_DRIVE_OPTION = "//div[@class='select__global_dealers']";
     public static final String PREFERRED_DATE_TOMORROW = "//span[@class='flatpickr-day today']//following-sibling::span";
     public static final String RX_300 = "choices--select_preferred_models-item-choice-14";
     public static final String SELECT_PAX = "select_pax";
     public static final String PAX_CHOICE_1 = "choices--select_pax-item-choice-2";
+    public static final String LICENSE_CHECKBOX = "checkbox_driving_license";
+    public static final String TERMS_CHECKBOX = "checkbox_terms_conditions";
     public static final String PRIVACY_POLICY = "checkbox_privacy_policy";
+    public static final String MARKETING_CHECKBOX = "checkbox_marketing";
     public static final String MARKETING = "checkbox_marketing";
     public static final String BG_PICTURE = "//picture[@class='sec__form_bg']";
     public static final String TEST_DRIVE_VALUE_3 = "//div[@data-value='lexus-test-drive-concierge']";

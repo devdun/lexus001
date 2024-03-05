@@ -48,8 +48,17 @@ public class FormPage {
     @FindBy(xpath = FormXpathContent.PREFERRED_MODEL)
     private WebElement preferredModel;
 
+    @FindBy(xpath = FormXpathContent.PREFERRED_MODEL_ClEAR)
+    private WebElement preferredModelClear;
+
     @FindBy(xpath = FormXpathContent.TEST_DRIVE_OPTION)
     private WebElement testDriveOption;
+
+    @FindBy(id = FormXpathContent.LICENSE_CHECKBOX)
+    private WebElement licenceCheckBox;
+
+    @FindBy(id = FormXpathContent.TERMS_CHECKBOX)
+    private WebElement termsCheckbox;
 
     @FindBy(id = FormXpathContent.PRIVACY_POLICY)
     private WebElement privacyPolicyCheckbox;
@@ -65,10 +74,15 @@ public class FormPage {
         fillLastName(lastName);
         fillEmailAddress(email);
         fillPhoneNumber(countryCode, phoneNo);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", phoneNoCountry);
+        commonOperations.waitForSpecificTime(1000);
     }
 
-    public void fillFormDriveDetails(String preferredTime, String consultant, String pax, String models, String testDrive){
+    public void fillFormdateTime(String preferredTime,String prefferedDate){
         selectPreferredTime(preferredTime);
+        selectPreferredDate(prefferedDate);
+    }
+    public void fillFormDriveDetails( String consultant, String pax, String models, String testDrive){
         selectPreferredSalesConsultant(consultant);
         selectNumberOfPax(pax);
         setPreferredModel(models);
@@ -141,30 +155,29 @@ public class FormPage {
     }
 
     public void setPreferredModel(String model) {
-        preferredModel.clear();
-        preferredModel.sendKeys(model);
+        if (driver.findElements(By.xpath("//div[@data-id= 'select_preferred_models']//button[contains(text(), 'Remove item')]")).size() != 0) {
+            preferredModelClear.click();
+        }
+        preferredModel.click();
+        selectValueFromDropdown(model);
     }
 
     public void selectTestDriveOption(String testDrive) {
-        scrollDown(driver);
         testDriveOption.click();
         selectValueFromDropdown(testDrive);
-    }
-
-    public static void scrollDown(WebDriver driver) {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            // Scroll down to the bottom of the page
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-            System.out.println("Scrolled down successfully.");
-        } catch (Exception e) {
-            System.out.println("Error occurred while scrolling: " + e.getMessage());
-        }
     }
 
     public void selectNumberOfPax(String paxCount) {
         numberOfPaxDropdown.click();
         selectValueFromDropdown(paxCount);
+    }
+
+    public void licenceCheckbox() {
+        licenceCheckBox.click();
+    }
+
+    public void termsCheckbox() {
+        termsCheckbox.click();
     }
 
     public void clickPrivacyPolicyCheckbox() {
