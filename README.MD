@@ -8,10 +8,10 @@ This repository contains a structured automation framework for testing a "Book a
 - [Setup](#setup)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-- [Usage](#usage)
+- [Running Tests](#Running Tests)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Introduction
 
@@ -32,7 +32,7 @@ Before running the tests, ensure you have the following installed:
 
 1. Clone the repository or download the source code.
    ```bash
-   git clone https://github.com/your-username/automation-framework.git
+   git clone https://github.com/devdun/lexus001.git
    ```
 
 2. Navigate to the project directory.
@@ -92,9 +92,6 @@ automation-framework/
 
 Contributions are welcome! If you have any suggestions, bug fixes, or feature implementations, feel free to open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
