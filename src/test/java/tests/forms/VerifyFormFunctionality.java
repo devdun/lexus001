@@ -19,36 +19,44 @@ public class VerifyFormFunctionality extends Base {
         return getData("form","lexusTest.xlsx");
     }
 
- /*   @Test(priority = 1, description = "Verify user is in correct page")
+    @Test(priority = 1, description = "Verify user is in correct page")
     public void verifyUserIsInCorrectPage(){
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.lexus.com.sg/en/contact-us/book-a-testdrive.html?model=ux%20300e", "Incorrect page URL");
-    }*/
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.lexus.com.sg/en/contact-us/book-a-test-drive.html?model=ux%20300e", "Incorrect page URL");
+    }
 
     @Test(dataProvider = "formTest", priority = 2, description = "Verify user can fill form details")
     public void testFillForm(String firstName, String lastName, String email, String countryCode, String phoneNo, String preferredTime, String consultant, String pax, String models, String testDrive){
         formPage = PageFactory.initElements(driver, FormPage.class);
         formPage.fillFormPersonalDetails(firstName, lastName, email, countryCode, phoneNo);
         //Date should be future date. past dates are not allowed.
-        formPage.selectPreferredDate("March 26, 2024");
-        formPage.selectPreferredTime(preferredTime);
+        formPage.fillFormdateTime(preferredTime,"March 26, 2024");
         formPage.selectPreferredSalesConsultant(null);
-        WebElement element = driver.findElement(By.xpath("//select[@id='select_pax']//following-sibling::div"));
-        scrollToElement(driver, element);
-        formPage.selectNumberOfPax(pax);
         formPage.setPreferredModel(models);
-        formPage.selectTestDriveOption(testDrive);
-//        Assert.assertTrue(formPage.isSubmitButtonEnabled(), "Submit button is not enabled after filling form");
+        formPage.selectNumberOfPax(pax);
+        formPage.selectTestDriveOption("lexus-test-drive-concierge");
+        formPage.licenceCheckbox();
+        formPage.termsCheckbox();
+        formPage.clickPrivacyPolicyCheckbox();
+        Assert.assertTrue(formPage.isSubmitButtonEnabled(), "Submit button is not enabled after filling form");
     }
 
 
-    public static void scrollToElement(WebDriver driver, WebElement element) {
-        try {
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            js.executeScript("arguments[0].scrollIntoView(true);", element);
-            System.out.println("Scrolled to the element successfully.");
-        } catch (Exception e) {
-            System.out.println("Error occurred while scrolling: " + e.getMessage());
-        }
+@Test(priority = 3, description = "Verify invalid email Address")
+    public void verifyInvalidEmailAddressValidation(){
+        formPage = PageFactory.initElements(driver, FormPage.class);
+        driver.navigate().refresh();
+        formPage.fillEmailAddress("invalid_email");
+        formPage.fillFirstName("email Validation");
+        Assert.assertTrue(formPage.isEmailErrorDisplayed(), "Email validation error not displayed for invalid email");
+    }
+
+@Test(priority = 4, description = "Verify empty fields validation")
+    public void verifyEmptyFieldsValidation(){
+        formPage = PageFactory.initElements(driver, FormPage.class);
+        formPage.fillFormPersonalDetails("", "", "", "", "");
+        Assert.assertTrue(formPage.isFirstNameErrorDisplayed(), "First name validation error not displayed for empty field");
+        Assert.assertTrue(formPage.isLastNameErrorDisplayed(), "Last name validation error not displayed for empty field");
+        Assert.assertTrue(formPage.isEmailErrorDisplayed(), "Email validation error not displayed for empty field");
     }
 
 }
