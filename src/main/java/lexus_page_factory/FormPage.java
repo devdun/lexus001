@@ -69,6 +69,12 @@ public class FormPage {
     @FindBy(xpath = FormXpathContent.SUBMIT)
     private WebElement submitButton;
 
+    @FindBy(xpath = FormXpathContent.SUBMIT_DISABLED)
+    private WebElement disabledSubmitButton;
+
+    @FindBy(xpath = FormXpathContent.SUBMIT_ENABLED)
+    private WebElement enabledSubmitButton;
+
     public void fillFormPersonalDetails(String firstName, String lastName, String email, String countryCode, String phoneNo) {
         fillFirstName(firstName);
         fillLastName(lastName);
@@ -90,8 +96,7 @@ public class FormPage {
     }
 
     public void fillAcceptConditions(){
-//        clickPrivacyPolicyCheckbox();
-//        clickMarketingCheckbox();
+
     }
 
     public void fillFormDriveDetails(String firstName, String lastName, String email, String countryCode, String phoneNo,
@@ -196,9 +201,35 @@ public class FormPage {
         driver.findElement(By.xpath("//div[@class='choices__item choices__item--choice choices__item--selectable'][@data-value='"+value+"']")).click();
     }
 
+    public boolean submitEnabled(){
+        return enabledSubmitButton.isDisplayed();
+    }
+
+    public boolean submitDisabled(){
+        return disabledSubmitButton.isDisplayed();
+    }
+
     public boolean isEmailErrorDisplayed() {
         try {
-            WebElement emailError = driver.findElement(By.xpath("//input[@id='email_address']/following-sibling::div[@class='invalid-feedback']"));
+            WebElement emailError = driver.findElement(By.xpath("//div[@class='mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg'][contains(text(), 'Please fill in your email address.')]"));
+            return emailError.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public boolean isFirstNameErrorDisplayed() {
+        try {
+            WebElement emailError = driver.findElement(By.xpath("//div[@class='mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg'][contains(text(), 'Please fill in your first name.')]"));
+            return emailError.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public boolean isLastNameErrorDisplayed() {
+        try {
+            WebElement emailError = driver.findElement(By.xpath("//div[@class='mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg'][contains(text(), 'Please fill in your last name')]"));
             return emailError.isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
